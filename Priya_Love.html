@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I Love You Priya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #2a0010, #000000);
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    #particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .text-container {
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      width: 100%;
+      z-index: 30;
+    }
+
+    .text-container::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 250px; height: 120px;
+      background: radial-gradient(ellipse, rgba(255, 10, 108, 0.4), transparent 70%);
+      z-index: -1;
+      opacity: 0;
+      animation: pulse-light 4s ease-in-out infinite alternate;
+      animation-delay: 3.5s;
+    }
+
+    @keyframes pulse-light {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    }
+
+    .title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      color: #fff;
+      text-shadow: 0 0 10px #ff0a6c, 0 0 20px #ff0a6c, 0 0 30px #ff0a6c;
+      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+      animation: reveal-text 3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      animation-delay: 3.5s;
+      white-space: nowrap;
+    }
+
+    @keyframes reveal-text {
+      0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .emoji {
+      display: inline-block;
+      font-family: sans-serif;
+      animation: float-emoji 3s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
+    @keyframes float-emoji {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-8px) scale(1.1); }
+    }
+
+    .bouquet-container {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .bouquet {
+      position: relative;
+      width: 0;
+      height: 100%;
+      margin: 0 auto;
+    }
+
+    .flower-wrapper {
+      position: absolute;
+      bottom: 15vh;
+      left: 50%;
+      transform-origin: bottom center;
+      transform: translateX(-50%) rotate(var(--f-angle)) scale(var(--f-scale));
+      will-change: transform;
+    }
+
+    .stem {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 7px;
+      height: var(--stem-h);
+      background: linear-gradient(to right, #0a400a, #1a801a, #0a400a);
+      transform-origin: bottom center;
+      transform: translateX(-50%) scaleY(0);
+      border-radius: 4px;
+      animation: grow-stem 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      animation-delay: var(--f-delay);
+      will-change: transform;
+    }
+
+    @keyframes grow-stem {
+      0% { transform: translateX(-50%) scaleY(0); }
+      100% { transform: translateX(-50%) scaleY(1); }
+    }
+
+    .leaf {
+      position: absolute;
+      bottom: 0;
+      width: 45px;
+      height: 22px;
+      background: linear-gradient(to right, #0a400a, #2eb82e);
+      transform: translateX(var(--l-x)) scale(0) rotate(var(--l-angle));
+      transform-origin: var(--l-origin);
+      animation: grow-leaf-pos 2s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+                 bloom-leaf 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation-delay: var(--f-delay), calc(var(--f-delay) + 1s);
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.4);
+      will-change: transform, bottom;
+    }
+
+    .leaf-left {
+      right: 50%;
+      --l-origin: right center;
+      --l-x: 2px;
+      border-radius: 25px 0 25px 0;
+    }
+
+    .leaf-right {
+      left: 50%;
+      --l-origin: left center;
+      --l-x: -2px;
+      border-radius: 0 25px 0 25px;
+    }
+
+    @keyframes grow-leaf-pos {
+      0% { bottom: 0; }
+      100% { bottom: var(--l-y); }
+    }
+
+    @keyframes bloom-leaf {
+      0% { transform: translateX(var(--l-x)) scale(0) rotate(var(--l-angle)); }
+      100% { transform: translateX(var(--l-x)) scale(1) rotate(var(--l-angle)); }
+    }
+
+    .flower {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(0);
+      animation: move-flower 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      animation-delay: var(--f-delay);
+      will-change: transform;
+    }
+
+    @keyframes move-flower {
+      0% { transform: translateX(-50%) translateY(0); }
+      100% { transform: translateX(-50%) translateY(calc(-1 * var(--stem-h) + 15px)); }
+    }
+
+    .petal {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 48px;
+      height: 115px;
+      border-radius: 50% 50% 15% 15% / 60% 60% 10% 10%;
+      transform-origin: bottom center;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
+      transform: translateX(-50%) scale(0) rotate(0deg);
+      animation: bloom 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation-delay: var(--delay);
+      will-change: transform;
+    }
+
+    @keyframes bloom {
+      0% { transform: translateX(-50%) scale(0) rotate(0deg); }
+      100% { transform: translateX(-50%) scale(var(--scale, 1)) rotate(var(--angle, 0deg)); }
+    }
+
+    .bow {
+      position: absolute;
+      bottom: calc(15vh - 15px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      opacity: 0;
+      animation: fade-in-bow 1s ease-in forwards;
+      animation-delay: 2.5s;
+    }
+
+    @keyframes fade-in-bow {
+      0% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+      100% { opacity: 1; transform: translateX(-50%) scale(1); }
+    }
+
+    .knot {
+      width: 22px; height: 22px;
+      background: radial-gradient(circle, #ff80ab, #c51162);
+      border-radius: 50%;
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 15px rgba(197, 17, 98, 0.7);
+      z-index: 3;
+    }
+
+    .loop {
+      position: absolute;
+      width: 40px; height: 30px;
+      border: 5px solid #c51162;
+      border-radius: 20px;
+      z-index: 2;
+    }
+
+    .loop-left { right: 8px; top: -12px; transform: rotate(-15deg); }
+    .loop-right { left: 8px; top: -12px; transform: rotate(15deg); }
+
+    .tail {
+      position: absolute;
+      width: 8px; height: 60px;
+      background: #c51162;
+      top: 5px;
+      z-index: 1;
+    }
+
+    .tail-left { right: 8px; transform: rotate(25deg); transform-origin: top center; border-radius: 4px; }
+    .tail-right { left: 8px; transform: rotate(-25deg); transform-origin: top center; border-radius: 4px; }
+
+    .fireflies {
+      position: absolute;
+      width: 100%; height: 100%;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    .firefly {
+      position: absolute;
+      width: 5px; height: 5px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 10px 2px #fff, 0 0 20px 4px #ff7ba9;
+      opacity: 0;
+      animation: float-firefly 8s infinite alternate ease-in-out;
+    }
+
+    .ff1 { bottom: 30vh; left: 30%; animation-delay: 2s; }
+    .ff2 { bottom: 50vh; left: 70%; animation-delay: 3s; }
+    .ff3 { bottom: 40vh; left: 50%; animation-delay: 4.5s; }
+    .ff4 { bottom: 60vh; left: 20%; animation-delay: 6s; }
+    .ff5 { bottom: 20vh; left: 80%; animation-delay: 1.5s; }
+
+    @keyframes float-firefly {
+      0% { transform: translate(0, 0) scale(1); opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translate(50px, -100px) scale(1.5); opacity: 0; }
+    }
+
+    .watermark {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 1px;
+      z-index: 30;
+      opacity: 0;
+      animation: reveal-watermark 2s ease-in forwards;
+      animation-delay: 5s;
+    }
+
+    @keyframes reveal-watermark {
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="particles"></canvas>
+  
+  <div class="fireflies">
+    <div class="firefly ff1"></div>
+    <div class="firefly ff2"></div>
+    <div class="firefly ff3"></div>
+    <div class="firefly ff4"></div>
+    <div class="firefly ff5"></div>
+  </div>
+
+  <div class="text-container">
+    <div class="title">I Love You, Priya <span class="emoji">😘</span></div>
+  </div>
+
+  <div class="bouquet-container">
+    <div class="bouquet">
+      <!-- Generated via JS -->
+    </div>
+    
+    <div class="bow">
+      <div class="loop loop-left"></div>
+      <div class="loop loop-right"></div>
+      <div class="knot"></div>
+      <div class="tail tail-left"></div>
+      <div class="tail tail-right"></div>
+    </div>
+  </div>
+
+  <div class="watermark">created by Priyam Kesh</div>
+
+  <script>
+    // --- Bouquet Generation ---
+    const bouquet = document.querySelector('.bouquet');
+
+    const flowers = [
+      // Center
+      { angle: 0, height: 320, scale: 1.1, delay: 0.2, c1: '#5c001e', c2: '#d8004b', c3: '#ff3377', leaves: [{y: 120, a: -30, type: 'left'}, {y: 170, a: 30, type: 'right'}] },
+      // Left 1
+      { angle: -18, height: 280, scale: 0.95, delay: 0.5, c1: '#8a0332', c2: '#ff0a6c', c3: '#ff7ba9', leaves: [{y: 140, a: -40, type: 'left'}] },
+      // Right 1
+      { angle: 18, height: 280, scale: 0.95, delay: 0.7, c1: '#b30059', c2: '#ff3385', c3: '#ff99c2', leaves: [{y: 130, a: 35, type: 'right'}] },
+      // Left 2 (Outer)
+      { angle: -35, height: 220, scale: 0.85, delay: 1.0, c1: '#cc0066', c2: '#ff66a3', c3: '#ffb3d1', leaves: [{y: 100, a: -45, type: 'left'}] },
+      // Right 2 (Outer)
+      { angle: 35, height: 220, scale: 0.85, delay: 1.2, c1: '#660022', c2: '#e6004c', c3: '#ff4d88', leaves: [{y: 90, a: 45, type: 'right'}] },
+      // Front Left
+      { angle: -10, height: 180, scale: 0.9, delay: 1.4, c1: '#8a0332', c2: '#ff0a6c', c3: '#ff7ba9', leaves: [] },
+      // Front Right
+      { angle: 10, height: 180, scale: 0.9, delay: 1.6, c1: '#5c001e', c2: '#d8004b', c3: '#ff3377', leaves: [] }
+    ];
+
+    flowers.forEach((f) => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'flower-wrapper';
+      wrapper.style.cssText = `--f-angle: ${f.angle}deg; --stem-h: ${f.height}px; --f-scale: ${f.scale}; --f-delay: ${f.delay}s; --color1: ${f.c1}; --color2: ${f.c2}; --color3: ${f.c3};`;
+      
+      let leavesHtml = f.leaves.map((l, i) => {
+        return `<div class="leaf leaf-${l.type}" style="--l-angle: ${l.a}deg; --l-y: ${l.y}px;"></div>`;
+      }).join('');
+
+      // Generate 11 petals
+      // Center petal (Core)
+      let petalsHtml = `<div class="petal" style="--angle: 0deg; --scale: 1; --delay: calc(var(--f-delay) + 1.5s); z-index: 10; background: linear-gradient(to top, var(--color1), var(--color2));"></div>`;
+      
+      // Layered petals expanding outward
+      const angles = [15, 30, 45, 60, 75];
+      angles.forEach((angle, i) => {
+        let scale = 0.95 - (i * 0.05);
+        let pDelay = 1.6 + (i * 0.1);
+        let z = 9 - i;
+        // Outer petals use lighter colors for 3D depth
+        let bg = i >= 3 ? `background: linear-gradient(to top, var(--color2), var(--color3));` : `background: linear-gradient(to top, var(--color1), var(--color2));`;
+        
+        petalsHtml += `<div class="petal" style="--angle: ${angle}deg; --scale: ${scale}; --delay: calc(var(--f-delay) + ${pDelay}s); z-index: ${z}; ${bg}"></div>`;
+        petalsHtml += `<div class="petal" style="--angle: -${angle}deg; --scale: ${scale}; --delay: calc(var(--f-delay) + ${pDelay}s); z-index: ${z}; ${bg}"></div>`;
+      });
+
+      wrapper.innerHTML = `
+        <div class="stem"></div>
+        ${leavesHtml}
+        <div class="flower">
+          ${petalsHtml}
+        </div>
+      `;
+      
+      bouquet.appendChild(wrapper);
+    });
+
+    // --- Background Particles (Canvas) ---
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    const particleCount = window.innerWidth < 600 ? 40 : 80;
+
+    class Particle {
+      constructor() {
+        this.reset();
+        this.y = Math.random() * canvas.height;
+      }
+      
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + 50;
+        this.speedY = Math.random() * 1.5 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 1;
+        this.size = Math.random() * 2 + 1.5;
+        this.alpha = Math.random() * 0.5 + 0.2;
+        this.type = Math.random() > 0.4 ? 'heart' : 'circle';
+        this.color = Math.random() > 0.5 ? '#ff0a6c' : '#ff7ba9';
+        this.wobble = Math.random() * Math.PI * 2;
+        this.wobbleSpeed = Math.random() * 0.05 + 0.01;
+      }
+      
+      draw() {
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        if (this.type === 'circle') {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          // Draw tiny heart
+          ctx.beginPath();
+          let r = this.size;
+          ctx.moveTo(this.x, this.y + r/4);
+          ctx.quadraticCurveTo(this.x, this.y, this.x + r/4, this.y);
+          ctx.quadraticCurveTo(this.x + r/2, this.y, this.x + r/2, this.y + r/4);
+          ctx.quadraticCurveTo(this.x + r/2, this.y, this.x, this.y + r);
+          ctx.quadraticCurveTo(this.x - r/2, this.y, this.x - r/2, this.y + r/4);
+          ctx.quadraticCurveTo(this.x - r/2, this.y, this.x - r/4, this.y);
+          ctx.quadraticCurveTo(this.x, this.y, this.x, this.y + r/4);
+          ctx.fill();
+        }
+      }
+      
+      update() {
+        this.y -= this.speedY;
+        this.wobble += this.wobbleSpeed;
+        this.x += Math.sin(this.wobble) * 0.5 + this.speedX;
+        
+        if (this.y < -20) {
+          this.reset();
+        }
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
